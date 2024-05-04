@@ -1,0 +1,37 @@
+appEnv: development
+server:
+  port: :4000
+  version: 1.0
+  jwtSecret: 38324
+  snowFlakeStartTime: "2023-01-01"
+  snowFlakeMachine: 1
+  contextTimeout: 1
+
+mysql:
+  dsn: root:root@tcp(127.0.0.1:3306)/go-rpc-user?charset=utf8mb4&parseTime=True&loc=Local
+
+redis:
+  dsn: localhost:6379
+
+etcd:
+  address: 127.0.0.1:2379
+
+services:
+  gateway:
+    name: gateway
+    loadBalance: true
+    addr: 127.0.0.1:10001
+  user:
+    name: user
+    loadBalance: false
+    addr: 127.0.0.1:10002
+  task:
+    name: task
+    loadBalance: false
+    addr: 127.0.0.1:10003
+
+domain:
+  user:
+    name: user
+  task:
+    name: task
