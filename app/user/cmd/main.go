@@ -23,12 +23,8 @@ func main() {
 
 	// 服务注册
 	etcdRegister := discovery.NewRegister(etcdAddress, logrus.New())
-	grpcAddress := env.Services["user"].Addr
 	defer etcdRegister.Stop()
-	userNode := discovery.Server{
-		Name: env.Domain["user"].Name,
-		Addr: grpcAddress,
-	}
+
 	server := grpc.NewServer()
 	defer server.Stop()
 
@@ -36,13 +32,21 @@ func main() {
 	userRepository := repository.NewUserRepository(app.Orm)
 	userService := service.NewUserServiceServer(userRepository)
 	pb.RegisterUserServiceServer(server, userService)
+
+	grpcAddress := env.Services["user"].Addr
 	lis, err := net.Listen("tcp", grpcAddress)
 	if err != nil {
 		panic(err)
 	}
+
+	userNode := discovery.Server{
+		Name: env.Domain["user"].Name,
+		Addr: grpcAddress,
+	}
 	if _, err := etcdRegister.Register(userNode, 10); err != nil {
 		panic(fmt.Sprintf("start server failed, err: %v", err))
 	}
+
 	logrus.Info("server started listen on ", grpcAddress)
 	if err := server.Serve(lis); err != nil {
 		panic(err)
