@@ -1,0 +1,46 @@
+syntax="proto3";
+option go_package = "relation/";
+
+service FollowService {
+  rpc Follow(FollowRequest) returns(FollowResponse);
+  rpc CancelFollow(FollowRequest) returns(FollowResponse);
+  rpc GetFollowee(GetFolloweeRequest) returns(GetFolloweeResponse); // 顶多缓存第一页
+  rpc RelationDetail(RelationDetailRequest) returns(RelationDetailResponse); // 有缓冲价值 命中率较高
+}
+
+
+message Follow {
+  int64 relation_id = 1;
+  int64 followee = 2;
+  int64 follower = 3;
+}
+
+message FollowRequest {
+  int64 followee = 1;
+  int64 follower = 2;
+}
+
+message FollowResponse {
+
+}
+
+message GetFolloweeRequest {
+  int32 page = 1;
+  int32 size = 2;
+  int64 follower = 3;
+}
+
+message GetFolloweeResponse {
+  int64 follower = 1;
+  int64 followee = 2;
+}
+
+message RelationDetailRequest {
+  int64 follower = 1;
+  int64 followee = 2;
+  bool status = 3;
+}
+
+message RelationDetailResponse {
+
+}
