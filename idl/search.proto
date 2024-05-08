@@ -1,0 +1,46 @@
+syntax="proto3";
+option go_package = "search/";
+
+service SyncService {
+    rpc InputUser(InputUserRequest) returns(InputUserResponse);
+    rpc InputPost(InputPostRequest) returns(InputPostResponse);
+
+    rpc InputAny(InputAnyRequest) returns(InputAnyResponse);
+}
+
+service SearchService {
+    rpc Search(SearchRequest) returns(SearchResponse);
+}
+
+message InputUserRequest {
+
+}
+
+message InputUserResponse {
+    
+}
+
+message InputPostRequest {
+    
+}
+
+message InputPostResponse {
+    
+}
+
+message InputAnyRequest {
+    
+}
+
+message InputAnyResponse {
+    
+}
+
+message SearchRequest {
+    string expression = 1;
+    int64 user_id = 2;
+}
+
+message SearchResponse {
+    
+}
